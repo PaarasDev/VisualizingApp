@@ -1,0 +1,320 @@
+/* ---------------- GLOBAL ---------------- */
+:root {
+  --bg-start: #0a0f2d;
+  --bg-end: #080c24;
+
+  --accent-blue: #6ca0ff;
+  --accent-purple: #c18cff;
+  --accent-teal: #38e8c6;
+  --accent-pink: #ff7cde;
+
+  --card-bg: rgba(255, 255, 255, 0.10);
+  --card-hover: rgba(255, 255, 255, 0.18);
+  --border-light: rgba(255, 255, 255, 0.25);
+
+  --text-main: #f3f5ff;
+  --text-muted: #c7c9d9;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(180deg, var(--bg-start), var(--bg-end));
+  color: var(--text-main);
+  font-family: "Segoe UI", Roboto, sans-serif;
+}
+
+/* ---------------- HEADER / HERO ---------------- */
+.hero {
+  text-align: center;
+  padding: 50px 20px 20px 20px;
+}
+
+.hero-title {
+  font-size: 42px;
+  font-weight: 700;
+  background: linear-gradient(to right, var(--accent-blue), var(--accent-purple));
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  margin-bottom: 10px;
+  letter-spacing: 1px;
+}
+
+.hero-subtitle {
+  font-size: 18px;
+  opacity: 0.8;
+  max-width: 700px;
+  margin: auto;
+}
+
+/* ---------------- PAGE WRAPPER ---------------- */
+.page {
+  padding: 30px 60px;
+  max-width: 1200px;
+  margin: auto;
+}
+
+/* ---------------- BUTTONS ---------------- */
+.btn {
+  padding: 12px 22px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 15px;
+  color: white;
+  backdrop-filter: blur(4px);
+  transition: 0.28s ease;
+  background: linear-gradient(
+    135deg,
+    rgba(108, 160, 255, 0.25),
+    rgba(193, 140, 255, 0.25)
+  );
+}
+
+.btn:hover {
+  transform: translateY(-4px) scale(1.03);
+  background: linear-gradient(
+    135deg,
+    rgba(108, 160, 255, 0.45),
+    rgba(193, 140, 255, 0.45)
+  );
+  box-shadow: 0 6px 18px rgba(108, 160, 255, 0.25);
+}
+
+.btn:active {
+  transform: scale(0.98);
+  box-shadow: none;
+}
+
+/* ---------------- INPUTS ---------------- */
+.input-box {
+  padding: 12px;
+  width: 260px;
+  border-radius: 12px;
+  border: 1px solid var(--border-light);
+  background: rgba(255, 255, 255, 0.12);
+  color: white;
+  transition: 0.25s ease;
+}
+
+.input-box:focus {
+  border-color: var(--accent-blue);
+  box-shadow: 0 0 10px rgba(108, 160, 255, 0.45);
+  outline: none;
+}
+
+/* ---------------- DS SELECTION GRID ---------------- */
+.ds-grid {
+  margin-top: 40px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 30px;
+}
+
+.ds-card {
+  padding: 40px 20px;
+  border-radius: 16px;
+  text-align: center;
+  font-size: 22px;
+  cursor: pointer;
+  background: var(--card-bg);
+  border: 1px solid var(--border-light);
+  transition: 0.35s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Fancy gradient glow effect */
+.ds-card::before {
+  content: "";
+  position: absolute;
+  top: -120%;
+  left: -120%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle,
+    rgba(108, 160, 255, 0.26),
+    rgba(255, 255, 255, 0)
+  );
+  transform: rotate(45deg);
+  opacity: 0;
+  transition: 0.4s ease;
+}
+
+.ds-card:hover::before {
+  opacity: 1;
+}
+
+.ds-card:hover {
+  transform: translateY(-8px) scale(1.05);
+  background: var(--card-hover);
+  box-shadow: 0 10px 25px rgba(108, 160, 255, 0.3);
+}
+
+.ds-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #E4E8FF;
+}
+
+/* ---------------- UNIVERSAL SCROLLABLE VISUALIZER ---------------- */
+
+.visual {
+  position: relative;
+  margin-top: 20px;
+
+  background: rgba(255,255,255,0.06);
+  border-radius: 20px;
+  border: 1px solid rgba(255,255,255,0.1);
+
+  padding: 20px;
+
+  width: 100%;
+  max-height: 460px;
+
+  overflow-x: auto;
+  overflow-y: auto;
+
+  white-space: nowrap;
+  scroll-behavior: smooth;
+}
+
+/* prevent inner svg from being cut */
+.visual * {
+  overflow: visible !important;
+}
+
+/* ---------------- TREE WRAPPER (prevents overflow) ---------------- */
+.tree-wrapper {
+  position: relative;
+  display: inline-block;
+
+  padding: 10px;
+  border-radius: 12px;
+
+  max-height: 360px;
+  overflow: auto; /* only shows if needed */
+}
+
+/* ---------------- ANIMATIONS ---------------- */
+.fade-in {
+  animation: fade 0.5s ease;
+}
+
+@keyframes fade {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+.slide-left {
+  animation: slideLeft 0.45s ease;
+}
+
+@keyframes slideLeft {
+  from { opacity: 0; transform: translateX(20px); }
+  to { opacity: 1; transform: translateX(0); }
+}
+
+.scale-in {
+  animation: scaleIn 0.45s ease;
+}
+
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.85); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+/* ---------------- PREMIUM NAVIGATION BAR ---------------- */
+
+.glass-nav {
+  width: 100%;
+  padding: 14px 40px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  background: rgba(255, 255, 255, 0.09);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+
+  border-radius: 0 0 16px 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+}
+
+.nav-buttons {
+  display: flex;
+  gap: 14px;
+}
+
+/* ICON BUTTON STYLE */
+.nav-icon-btn {
+  padding: 10px 18px;
+  border-radius: 12px;
+
+  background: linear-gradient(
+    135deg,
+    rgba(108, 160, 255, 0.25),
+    rgba(193, 140, 255, 0.25)
+  );
+
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #e7eaff;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  backdrop-filter: blur(6px);
+  transition: 0.25s ease;
+}
+
+.nav-icon-btn:hover {
+  transform: translateY(-3px);
+  background: linear-gradient(
+    135deg,
+    rgba(108, 160, 255, 0.45),
+    rgba(193, 140, 255, 0.45)
+  );
+  box-shadow: 0 6px 16px rgba(108, 160, 255, 0.35);
+}
+
+.nav-icon-btn:active {
+  transform: scale(0.95);
+}
+
+.nav-logo {
+  font-size: 24px;
+  font-weight: 700;
+  letter-spacing: 1px;
+
+  background: linear-gradient(to right, var(--accent-blue), var(--accent-purple));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  animation: glow 2.5s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+  from {
+    text-shadow: 0 0 4px rgba(108, 160, 255, 0.4);
+  }
+  to {
+    text-shadow: 0 0 12px rgba(193, 140, 255, 0.8);
+  }
+}
