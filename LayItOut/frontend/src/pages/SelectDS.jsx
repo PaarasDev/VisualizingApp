@@ -1,42 +1,22 @@
-import { useNavigate } from "react-router-dom";
-import NavBar from "../components/NavBar";
-
-const DS_LIST = [
-  "Array",
-  "Linked List",
-  "Stack",
-  "Queue",
-  "Tree",
-  "Heap",
-  "Graph"
-];
+import React from "react";
+import DSPageLayout from "../components/ds/DSPageLayout";
+import DSTitle from "../components/ds/DSTitle";
+import DSTypeCard from "../components/ds/DSTypeCard";
 
 export default function SelectDS() {
-  const navigate = useNavigate();
-
   return (
-    <div className="page fade-in">
-
-      <NavBar />
-
-      <div className="hero">
-        <div className="hero-title">LayItOut — Visual Data Structures Explorer</div>
-        <div className="hero-subtitle">
-          Choose a data structure to begin building, editing, and visualizing it through beautiful animations.
-        </div>
-      </div>
+    <DSPageLayout title="Select Data Structure">
+      <DSTitle>Pick a data structure to explore</DSTitle>
 
       <div className="ds-grid">
-        {DS_LIST.map((ds) => (
-          <div
-            key={ds}
-            className="ds-card scale-in"
-            onClick={() => navigate(`/build/${encodeURIComponent(ds)}`)}
-          >
-            {ds}
-          </div>
-        ))}
+        <DSTypeCard title="Array" to="/build?ds=Array" />
+        <DSTypeCard title="Linked List" to="/linkedlist" />
+        <DSTypeCard title="Stack" to="/stack" />
+        <DSTypeCard title="Queue" to="/queue" />
+        <DSTypeCard title="Tree" to="/tree" />
+        <DSTypeCard title="Heap" to="/heap" />
+        <DSTypeCard title="Graph" to="/graph" />
       </div>
-    </div>
+    </DSPageLayout>
   );
 }

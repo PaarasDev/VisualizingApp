@@ -1,46 +1,35 @@
-import { useParams, useNavigate } from "react-router-dom";
-import { useState } from "react";
-import NavBar from "../components/NavBar";
+import React, { useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import DSPageLayout from "../components/ds/DSPageLayout";
+import DSTitle from "../components/ds/DSTitle";
 
 export default function BuildDS() {
-  const { dsType } = useParams();
+  const [params] = useSearchParams();
+  const dsFromQuery = params.get("ds") || "";
+  const [input, setInput] = useState("1,2,3,4");
   const navigate = useNavigate();
 
-  const [input, setInput] = useState("");
+  function handleProceed() {
+    // navigate to visualize page with query params
+    navigate(`/array?data=${input}`);
+
+  }
 
   return (
-    <div className="page fade-in">
-
-      <NavBar />
-
-      <div className="hero">
-        <div className="hero-title">Build {dsType}</div>
-        <div className="hero-subtitle">
-          Enter comma-separated values to initialize your {dsType} data structure.
-        </div>
-      </div>
+    <DSPageLayout title={`Build ${dsFromQuery || "Data Structure"}`}>
+      <DSTitle>Build {dsFromQuery || "Data Structure"}</DSTitle>
 
       <div className="input-row">
-
         <input
           className="input-box"
           value={input}
           onChange={(e) => setInput(e.target.value)}
-          placeholder="Example: 10, 20, 30, 40"
+          placeholder="Enter values (e.g. 1,2,3 or A,B,C)"
         />
-
-        <button
-          className="btn"
-          onClick={() =>
-            navigate(
-              `/visualize/${encodeURIComponent(dsType)}`,
-              { state: { input } }
-            )
-          }
-        >
-          Build Structure →
+        <button className="btn" onClick={handleProceed} disabled={!dsFromQuery}>
+          Proceed to Visualize
         </button>
       </div>
-    </div>
+    </DSPageLayout>
   );
 }

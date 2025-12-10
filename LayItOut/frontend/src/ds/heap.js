@@ -1,52 +1,96 @@
-//MAX HEAP
-export function create(arr) {
-  const a = [...arr];
-  for (let i = Math.floor(a.length / 2) - 1; i >= 0; i--) {
-    heapify(a, i);
-  }
-  return a;
+function swap(arr, i, j) {
+  const t = arr[i];
+  arr[i] = arr[j];
+  arr[j] = t;
 }
 
-function heapify(a, i) {
-  const n = a.length;
-  let largest = i;
-
-  const left = 2 * i + 1;
-  const right = 2 * i + 2;
-
-  if (left < n && a[left] > a[largest]) largest = left;
-  if (right < n && a[right] > a[largest]) largest = right;
-
-  if (largest !== i) {
-    [a[i], a[largest]] = [a[largest], a[i]];
-    heapify(a, largest);
+function heapifyUp(arr, idx, cmp) {
+  while (idx > 0) {
+    const p = Math.floor((idx - 1) / 2);
+    if (cmp(arr[idx], arr[p])) {
+      swap(arr, idx, p);
+      idx = p;
+    } else break;
   }
 }
 
-export function apply(heap, op, args) {
-  const a = [...heap];
+function heapifyDown(arr, idx, cmp) {
+  const n = arr.length;
+  while (true) {
+    let best = idx;
+    const l = 2 * idx + 1;
+    const r = 2 * idx + 2;
+
+    if (l < n && cmp(arr[l], arr[best])) best = l;
+    if (r < n && cmp(arr[r], arr[best])) best = r;
+
+    if (best === idx) break;
+
+    swap(arr, idx, best);
+    idx = best;
+  }
+}
+
+function normalize(list) {
+  if (!Array.isArray(list)) return [];
+  return list
+    .map((x) => Number(x))
+    .filter((n) => Number.isFinite(n));
+}
+
+export function create(data = [], mode = "max") {
+  const arr = normalize(data);
+  const cmp = mode === "min" ? (a, b) => a < b : (a, b) => a > b;
+
+  for (let i = Math.floor(arr.length / 2) - 1; i >= 0; i--) {
+    heapifyDown(arr, i, cmp);
+  }
+  return arr;
+}
+
+export function apply(state = [], mode = "max", op = "", args = []) {
+  const arr = [...state];
+  const cmp = mode === "min" ? (a, b) => a < b : (a, b) => a > b;
 
   switch (op) {
-    case "Insert":
-      a.push(args[0]);
-      for (let i = Math.floor(a.length / 2) - 1; i >= 0; i--) {
-        heapify(a, i);
-      }
-      return a;
-
-    case "Delete": {
-      const index = Number(args[0] ?? 0);
-      a.splice(index, 1);
-      for (let i = Math.floor(a.length / 2) - 1; i >= 0; i--) {
-        heapify(a, i);
-      }
-      return a;
+    case "Insert": {
+      if (!args.length) return arr;
+      const value = Number(args[0]);
+      if (!Number.isFinite(value)) return arr;
+      arr.push(value);
+      heapifyUp(arr, arr.length - 1, cmp);
+      return arr;
     }
 
-    case "BuildHeap":
-      return create(a);
+    case "Delete": {
+      if (!arr.length) return arr;
+      let idx = Number(args[0]);
+      if (!Number.isFinite(idx)) idx = 0;
+
+      idx = Math.max(0, Math.min(idx, arr.length - 1));
+
+      swap(arr, idx, arr.length - 1);
+      arr.pop();
+
+      if (idx < arr.length) heapifyDown(arr, idx, cmp);
+
+      return arr;
+    }
+
+    case "Clear":
+      return [];
+
+    case "Peek":
+      return arr;
 
     default:
-      return a;
+      return arr;
   }
 }
+
+export const createMax = (d) => create(d, "max");
+export const applyMax = (s, o, a) => apply(s, "max", o, a);
+
+// ✅ REQUIRED FOR MIN HEAP
+export const createMin = (d) => create(d, "min");
+export const applyMin = (s, o, a) => apply(s, "min", o, a);
